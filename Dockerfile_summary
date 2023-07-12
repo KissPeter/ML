@@ -1,0 +1,17 @@
+FROM python:3.11.3-slim-buster
+ENV PIP_NO_CACHE_DIR=yes
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade && apt install -y --no-install-recommends nginx-light && rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip
+WORKDIR /src/
+COPY text_summary .
+COPY start_services.sh .
+RUN rm -rf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY gconf.py .
+COPY requirements.txt .
+COPY torch_requirements.txt .
+RUN pip3 install -r requirements.txt
+RUN pip3 install -r torch_requirements.txt
+ENV GUNICORN_CMD_ARGS="-c gconf.py --reuse-port"
+EXPOSE 80
+ENTRYPOINT /src/start_services.sh

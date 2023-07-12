@@ -1,0 +1,65 @@
+version: '3.1'
+
+services:
+
+  download_model_data:
+    container_name: download_model_data
+    build:
+      context: .
+      dockerfile: Dockerfile_download_model_data
+    volumes:
+      - "./sentiment_scoring/model:/src/sentiment_scoring"
+      - "./text_summary/model:/src/summarization"
+
+  text_summary:
+    depends_on:
+      - download_model_data
+    container_name: text_summary
+    build:
+      context: .
+      dockerfile: Dockerfile_summary
+    image: text_summary:latest
+    environment:
+      WORKERS: 1
+      THREADS: 1
+    ports:
+      - "8002:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+    restart: 'no'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  sentiment_score:
+    depends_on:
+      - download_model_data
+    container_name: sentiment_score
+    build:
+      context: .
+      dockerfile: Dockerfile_sentiment
+    image: sentiment_score:latest
+    environment:
+      WORKERS: 1
+      THREADS: 1
+    ports:
+      - "8002:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+    restart: 'no'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+

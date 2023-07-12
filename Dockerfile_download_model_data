@@ -1,0 +1,11 @@
+FROM python:3.11.3-slim-buster
+ENV PIP_NO_CACHE_DIR=yes
+RUN pip install --upgrade pip
+WORKDIR /src/
+COPY download_models.py .
+COPY requirements.txt .
+COPY torch_requirements.txt .
+RUN pip3 install -r requirements.txt
+RUN pip3 install -r torch_requirements.txt
+RUN find .
+CMD python3 download_models.py

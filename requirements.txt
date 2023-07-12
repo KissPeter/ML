@@ -1,0 +1,7 @@
+starlette
+gunicorn
+fastapi
+uvicorn
+python-multipart
+transformers
+markupsafe==2.0.1
