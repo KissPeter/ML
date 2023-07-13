@@ -10,10 +10,17 @@ services:
     volumes:
       - "./sentiment_scoring/model:/src/sentiment_scoring"
       - "./text_summary/model:/src/summarization"
+    healthcheck:
+      test: bash -c '[ -S /tmp/ready ]'
+      interval: 5s
+      timeout: 2s
+      retries: 100
+      start_period: 30s
 
   text_summary:
     depends_on:
-      - download_model_data
+      download_model_data:
+        condition: service_healthy
     container_name: text_summary
     build:
       context: .
@@ -41,7 +48,8 @@ services:
 
   sentiment_score:
     depends_on:
-      - download_model_data
+      download_model_data:
+        condition: service_healthy
     container_name: sentiment_score
     build:
       context: .
@@ -66,4 +74,3 @@ services:
         hard: 65536
     volumes:
       - "./sentiment_scoring/model:/src/sentiment_scoring"
-

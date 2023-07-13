@@ -23,7 +23,7 @@ def summarize(text):
         'text': text
     }
     print(f"{_min} - {_max}")
-    _request =  http_client.request(method='POST', url='http://localhost:8002/v1/summarize/', fields=fields)
+    _request =  http_client.request(method='POST', url='http://localhost:8001/v1/summarize/', fields=fields)
     print(f"{text} summary generation {_request.status}  finished in {_request.headers.get('x-process-time')} seconds, summary:")
     return _request.data.decode("utf-8")
 

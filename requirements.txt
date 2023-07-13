@@ -3,5 +3,5 @@ gunicorn
 fastapi
 uvicorn
 python-multipart
-transformers
+transformers==4.29.2
 markupsafe==2.0.1
