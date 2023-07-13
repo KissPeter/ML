@@ -3,4 +3,4 @@ gunicorn
 fastapi
 uvicorn
 python-multipart
-transformers==4.29.2
+transformers==4.30.2
