@@ -29,3 +29,6 @@ https://github.com/dmmiller612/bert-extractive-summarizer/network/dependents
 # Seems like there are 2 pillars of a good summarizer:
 1. Coreference technique: identify and substitute the subject of the sentences accurately
 2. Extractive Summarization: ability  to cope with long tokens
+
+# Configuration
+You can configure the FastAPI framework with WORKERS and THREADS env variable - used by gconf.py
